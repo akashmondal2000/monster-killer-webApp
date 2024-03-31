@@ -1,6 +1,7 @@
 const ATTACK_VALUE = 10;
-const STRONG_ATTACK_VALUE = 20;
+const STRONG_ATTACK_VALUE = 17;
 const MONSTER_ATTACK_VALUE = 14;
+const HEAL_VALUE = 20;
 
 
 
@@ -9,6 +10,20 @@ let currentMonsterHealth = chosenMaxLife;
 let currentPlayerHealth = chosenMaxLife;
 
 adjustHealthBars(chosenMaxLife)
+
+function endRound (){
+    const playerDemege = dealPlayerDamage(MONSTER_ATTACK_VALUE);
+    currentPlayerHealth -= playerDemege;
+
+    if(currentMonsterHealth <= 0 && currentPlayerHealth > 0){
+        alert("You Won!")
+    }else if(currentPlayerHealth <= 0 && currentMonsterHealth > 0){
+        alert("You Lost!")
+    }else if (currentPlayerHealth <= 0 && currentMonsterHealth <= 0 ){
+        alert("You draw this game")
+    }
+
+}
 
 
 function attactMonster (mode){
@@ -22,26 +37,29 @@ function attactMonster (mode){
     const damage = dealMonsterDamage(maxDamege);
     currentMonsterHealth -= damage; // currentMonsterHealth = currentMonsterHealth - damage //both are same -> 1st one is short hand//
     
-    const playerDemege = dealPlayerDamage(MONSTER_ATTACK_VALUE);
-    currentPlayerHealth -= playerDemege;
-
-    if(currentMonsterHealth <= 0 && currentPlayerHealth > 0){
-        alert("You Won!")
-    }else if(currentPlayerHealth <= 0 && currentMonsterHealth > 0){
-        alert("You Lost!")
-    }else if (currentPlayerHealth <= 0 && currentMonsterHealth <= 0 ){
-        alert("You draw this game")
-    }
+    endRound()
 }
 
 function attackHandler(){
     attactMonster("ATTACK")
-
 }
 
 function strongAttackHandler (){
     attactMonster("STRONG_ATTACK")
 }
 
+function healPlayerHandler () {
+    let healValue ;
+    if(currentPlayerHealth >= chosenMaxLife - HEAL_VALUE){
+        alert(`you can't heal to more then your max initial health`)
+    }else{
+        healValue = HEAL_VALUE
+    }
+    increasePlayerHealth(healValue)
+    currentPlayerHealth += healValue; 
+    endRound();
+}
+
 attackBtn.addEventListener('click',attackHandler)
 strongAttackBtn.addEventListener('click',strongAttackHandler)
+healBtn.addEventListener('click',healPlayerHandler)
