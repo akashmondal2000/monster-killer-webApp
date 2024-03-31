@@ -9,6 +9,10 @@ function attackHandler(){
     
     const damage = dealMonsterDamage(ATTACT_VALUE);
     currentMonsterHealth -= damage; // currentMonsterHealth = currentMonsterHealth - damage //both are same -> 1st one is short hand//
+    if(currentMonsterHealth <= 0){
+        alert("You Won!")
+    }
+
 }
 
 attackBtn.addEventListener('click',attackHandler)
