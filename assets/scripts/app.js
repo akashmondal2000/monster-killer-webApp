@@ -1,5 +1,8 @@
 const ATTACT_VALUE = 10;
+const STRONG_ATTACT_VALUE = 20;
 const MONSTER_ATTACT_VALUE = 11;
+
+
 
 let chosenMaxLife = 100;
 let currentMonsterHealth = chosenMaxLife;
@@ -25,4 +28,22 @@ function attackHandler(){
 
 }
 
+function strongAttackHandler (){
+
+    const damage = dealMonsterDamage(STRONG_ATTACT_VALUE);
+    currentMonsterHealth -= damage; // currentMonsterHealth = currentMonsterHealth - damage //both are same -> 1st one is short hand//
+    
+    const playerDemege = dealPlayerDamage(MONSTER_ATTACT_VALUE);
+    currentPlayerHealth -= playerDemege;
+
+    if(currentMonsterHealth <= 0 && currentPlayerHealth > 0){
+        alert("You Won!")
+    }else if(currentPlayerHealth <= 0 && currentMonsterHealth > 0){
+        alert("You Lost!")
+    }else if (currentPlayerHealth <= 0 && currentMonsterHealth <= 0 ){
+        alert("You draw this game")
+    }
+}
+
 attackBtn.addEventListener('click',attackHandler)
+strongAttackBtn.addEventListener('click',strongAttackHandler)
