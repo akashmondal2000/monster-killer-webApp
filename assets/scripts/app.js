@@ -126,15 +126,15 @@ function endRound() {
 }
 
 function attactMonster(mode) {
-  let maxDamege;
-  let logEvent;
-  if (mode === MODE_ATTACK) {
-    maxDamege = ATTACK_VALUE;
-    logEvent = LOG_EVENT_PLAYER_ATTACK;
-  } else if (mode === MODE_STRONG_ATTACK) {
-    maxDamege = STRONG_ATTACK_VALUE;
-    logEvent = LOG_EVENT_PLAYER_STRONG_ATTACK;
-  }
+  const maxDamege = mode === MODE_ATTACK? ATTACK_VALUE : STRONG_ATTACK_VALUE; // using ternary operator
+  const logEvent = mode === MODE_ATTACK? LOG_EVENT_PLAYER_ATTACK : LOG_EVENT_PLAYER_STRONG_ATTACK;
+  // if (mode === MODE_ATTACK) {
+  //   maxDamege = ATTACK_VALUE;
+  //   logEvent = LOG_EVENT_PLAYER_ATTACK;
+  // } else if (mode === MODE_STRONG_ATTACK) {
+  //   maxDamege = STRONG_ATTACK_VALUE;
+  //   logEvent = LOG_EVENT_PLAYER_STRONG_ATTACK;
+  // }
 
   const damage = dealMonsterDamage(maxDamege);
   currentMonsterHealth -= damage; // currentMonsterHealth = currentMonsterHealth - damage //both are same -> 1st one is short hand//
