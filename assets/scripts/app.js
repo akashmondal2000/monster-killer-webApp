@@ -32,40 +32,84 @@ function writeToLog(ev, val, monsterHealth, playerHealth) {
     finalMonsterHealth: monsterHealth,
     finalPlayerHealth: playerHealth,
   };
-  if (ev === LOG_EVENT_PLAYER_ATTACK) {
-    logEntry.target = "MONSTER";
-  } else if (ev === LOG_EVENT_PLAYER_STRONG_ATTACK) {
-    logEntry = {
-      event: ev,
-      value: val,
-      target: "MONSTER",
-      finalMonsterHealth: monsterHealth,
-      finalPlayerHealth: playerHealth,
-    };
-  } else if (ev === LOG_EVENT_MONSTER_ATTACK) {
-    logEntry = {
-      event: ev,
-      value: val,
-      target: "PLAYER",
-      finalMonsterHealth: monsterHealth,
-      finalPlayerHealth: playerHealth,
-    };
-  } else if (ev === LOG_EVENT_PALYER_HEAL) {
-    logEntry = {
-      event: ev,
-      value: val,
-      target: "PLAYER",
-      finalMonsterHealth: monsterHealth,
-      finalPlayerHealth: playerHealth,
-    };
-  } else if (ev === LOG_EVENT_GAME_OVER) {
-    logEntry = {
-      event: ev,
-      value: val,
-      finalMonsterHealth: monsterHealth,
-      finalPlayerHealth: playerHealth,
-    };
+
+  switch (ev) {
+    case LOG_EVENT_PLAYER_ATTACK:
+      logEntry.target = "MONSTER";
+      break ;
+    case LOG_EVENT_PLAYER_STRONG_ATTACK:
+      logEntry = {
+        event: ev,
+        value: val,
+        target: "MONSTER",
+        finalMonsterHealth: monsterHealth,
+        finalPlayerHealth: playerHealth,
+      };
+      break ;
+      case LOG_EVENT_MONSTER_ATTACK : 
+      logEntry = {
+        event: ev,
+        value: val,
+        target: "PLAYER",
+        finalMonsterHealth: monsterHealth,
+        finalPlayerHealth: playerHealth,
+      };
+      break ;
+      case LOG_EVENT_PALYER_HEAL : 
+      logEntry = {
+        event: ev,
+        value: val,
+        target: "PLAYER",
+        finalMonsterHealth: monsterHealth,
+        finalPlayerHealth: playerHealth,
+      };
+      break;
+      case LOG_EVENT_GAME_OVER :
+        logEntry = {
+          event: ev,
+          value: val,
+          finalMonsterHealth: monsterHealth,
+          finalPlayerHealth: playerHealth,
+        };
+        break;
+        default : {};
+        break;;
   }
+
+  // if (ev === LOG_EVENT_PLAYER_ATTACK) {
+  //   logEntry.target = "MONSTER";
+  // } else if (ev === LOG_EVENT_PLAYER_STRONG_ATTACK) {
+  //   logEntry = {
+  //     event: ev,
+  //     value: val,
+  //     target: "MONSTER",
+  //     finalMonsterHealth: monsterHealth,
+  //     finalPlayerHealth: playerHealth,
+  //   };
+  // } else if (ev === LOG_EVENT_MONSTER_ATTACK) {
+  //   logEntry = {
+  //     event: ev,
+  //     value: val,
+  //     target: "PLAYER",
+  //     finalMonsterHealth: monsterHealth,
+  //     finalPlayerHealth: playerHealth,
+  //   };
+  // } else if (ev === LOG_EVENT_PALYER_HEAL) {
+  //   logEntry = {
+  //     event: ev,
+  //     value: val,
+  //     target: "PLAYER",
+  //     finalMonsterHealth: monsterHealth,
+  //     finalPlayerHealth: playerHealth,
+  //   };
+  // } else if (ev === LOG_EVENT_GAME_OVER) {
+  //   logEntry = {
+  //     event: ev,
+  //     value: val,
+  //     finalMonsterHealth: monsterHealth,
+  //     finalPlayerHealth: playerHealth,
+  //   };
+  // }
   battleLog.push(logEntry);
 }
 
@@ -126,8 +170,11 @@ function endRound() {
 }
 
 function attactMonster(mode) {
-  const maxDamege = mode === MODE_ATTACK? ATTACK_VALUE : STRONG_ATTACK_VALUE; // using ternary operator
-  const logEvent = mode === MODE_ATTACK? LOG_EVENT_PLAYER_ATTACK : LOG_EVENT_PLAYER_STRONG_ATTACK;
+  const maxDamege = mode === MODE_ATTACK ? ATTACK_VALUE : STRONG_ATTACK_VALUE; // using ternary operator
+  const logEvent =
+    mode === MODE_ATTACK
+      ? LOG_EVENT_PLAYER_ATTACK
+      : LOG_EVENT_PLAYER_STRONG_ATTACK;
   // if (mode === MODE_ATTACK) {
   //   maxDamege = ATTACK_VALUE;
   //   logEvent = LOG_EVENT_PLAYER_ATTACK;
@@ -139,12 +186,7 @@ function attactMonster(mode) {
   const damage = dealMonsterDamage(maxDamege);
   currentMonsterHealth -= damage; // currentMonsterHealth = currentMonsterHealth - damage //both are same -> 1st one is short hand//
 
-  writeToLog(
-    logEvent,
-    damage, 
-    currentMonsterHealth, 
-    currentPlayerHealth
-    );
+  writeToLog(logEvent, damage, currentMonsterHealth, currentPlayerHealth);
 
   endRound();
 }
@@ -168,11 +210,11 @@ function healPlayerHandler() {
   currentPlayerHealth += healValue;
 
   writeToLog(
-    LOG_EVENT_PALYER_HEAL, 
-    healValue, 
-    currentMonsterHealth, 
+    LOG_EVENT_PALYER_HEAL,
+    healValue,
+    currentMonsterHealth,
     currentPlayerHealth
-    );
+  );
   endRound();
 }
 
