@@ -11,24 +11,25 @@ const LOG_EVENT_MONSTER_ATTACK = "MONSTER_ATTACK";
 const LOG_EVENT_PALYER_HEAL = "PLAYER_HEAL";
 const LOG_EVENT_GAME_OVER = "GAME_OVER";
 
-
-
-function getMaxLifeValues (){
+function getMaxLifeValues() {
   const enteredInput = prompt("Enter maximum life for you and monster.,'100' ");
 
-let parsedValue = parseInt(enteredInput);
-if (isNaN(parsedValue) || parsedValue <= 0) {
-  throw {message : "Invalid User Input, is not a number "}
+  let parsedValue = parseInt(enteredInput);
+  if (isNaN(parsedValue) || parsedValue <= 0) {
+    throw { message: "Invalid User Input, is not a number " };
+  }
+  return parsedValue;
 }
-return parsedValue;
 
+let chosenMaxLife;
+
+try {
+  chosenMaxLife = getMaxLifeValues();
+} catch (error) {
+  console.log(error);
+  chosenMaxLife = 100;
+  alert("You Entered somthing wrong, default value 100 was used");
 }
-
-let chosenMaxLife = getMaxLifeValues();
-
-
-
-
 
 let currentMonsterHealth = chosenMaxLife;
 let currentPlayerHealth = chosenMaxLife;
@@ -48,7 +49,7 @@ function writeToLog(ev, val, monsterHealth, playerHealth) {
   switch (ev) {
     case LOG_EVENT_PLAYER_ATTACK:
       logEntry.target = "MONSTER";
-      break ;
+      break;
     case LOG_EVENT_PLAYER_STRONG_ATTACK:
       logEntry = {
         event: ev,
@@ -57,17 +58,8 @@ function writeToLog(ev, val, monsterHealth, playerHealth) {
         finalMonsterHealth: monsterHealth,
         finalPlayerHealth: playerHealth,
       };
-      break ;
-      case LOG_EVENT_MONSTER_ATTACK : 
-      logEntry = {
-        event: ev,
-        value: val,
-        target: "PLAYER",
-        finalMonsterHealth: monsterHealth,
-        finalPlayerHealth: playerHealth,
-      };
-      break ;
-      case LOG_EVENT_PALYER_HEAL : 
+      break;
+    case LOG_EVENT_MONSTER_ATTACK:
       logEntry = {
         event: ev,
         value: val,
@@ -76,16 +68,27 @@ function writeToLog(ev, val, monsterHealth, playerHealth) {
         finalPlayerHealth: playerHealth,
       };
       break;
-      case LOG_EVENT_GAME_OVER :
-        logEntry = {
-          event: ev,
-          value: val,
-          finalMonsterHealth: monsterHealth,
-          finalPlayerHealth: playerHealth,
-        };
-        break;
-        default : {};
-        break;;
+    case LOG_EVENT_PALYER_HEAL:
+      logEntry = {
+        event: ev,
+        value: val,
+        target: "PLAYER",
+        finalMonsterHealth: monsterHealth,
+        finalPlayerHealth: playerHealth,
+      };
+      break;
+    case LOG_EVENT_GAME_OVER:
+      logEntry = {
+        event: ev,
+        value: val,
+        finalMonsterHealth: monsterHealth,
+        finalPlayerHealth: playerHealth,
+      };
+      break;
+    default:
+      {
+      }
+      break;
   }
 
   // if (ev === LOG_EVENT_PLAYER_ATTACK) {
@@ -231,16 +234,15 @@ function healPlayerHandler() {
 }
 
 function printLogHandler() {
-
   // for (let i=0; i<battleLog.length; i++){
   //   console.log(battleLog[i])
 
   // }
-  let i =0;
-  for (const logEntry of battleLog){
+  let i = 0;
+  for (const logEntry of battleLog) {
     console.log(`# ${i}`);
-    for (const key in logEntry){
-      console.log(`${key} ==> ${logEntry[key]}`)
+    for (const key in logEntry) {
+      console.log(`${key} ==> ${logEntry[key]}`);
     }
     i++;
   }
